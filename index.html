@@ -9,10 +9,17 @@
 			}
 			
 			div {
+				display: flex;
+				justify-content: center;
+				flex-direction:column;
 				background-color: #2E3440;
 				width: 100vw;
 				height: 100vh;
 				max-width:100%;
+			}
+
+			div.alt-colour {
+				background-color: #4C566A;
 			}
 
 			div > h1 {
@@ -20,10 +27,12 @@
 			}
 
 			div > p {
-
+				text-align: center;
 			}
 
 			body {
+				display:flex;
+				flex-direction: column;
 				font-family: 'Noto Sans', sans-serif;
 				color: #ECEFF4;
 			}
@@ -32,8 +41,7 @@
 	<body>
 		<div>
 			<h1>Edward Stanforth</h1>
-
 		</div>
-		<div>test</div>
+		<div class="alt-colour">test</div>
 	</body>
 </html>
