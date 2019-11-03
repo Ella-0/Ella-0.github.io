@@ -6,16 +6,49 @@
 			* {
     				margin: 0;
     				padding: 0;
+				color: #ECEFF4;
+				text-decoration: none;
 			}
 			
 			div {
 				display: flex;
 				justify-content: center;
-				flex-direction:column;
 				background-color: #2E3440;
 				width: 100vw;
-				height: 100vh;
 				max-width:100%;
+			}
+
+			div.nav {
+				position: sticky;
+				top: 0;
+			}
+
+			div.nav > a {
+				border: 2px solid;
+				border-radius: 5px;
+				margin: 1% 1%;
+				padding: 0 5%;
+				transition-duration: 1s;
+				transition-property: color, background-color;
+				width: 20vmax;
+				text-align: center;
+			}
+
+			div.nav > a:hover {
+				background-color: #ECEFF4;
+				color: #2E3440;
+			}
+
+			div.column {
+				flex-direction: column;
+			}
+
+			div.row {
+				flex-direction: row;
+			}
+
+			div.h100 {
+				height: 100vh;
 			}
 
 			div.alt-colour {
@@ -30,6 +63,14 @@
 				text-align: center;
 			}
 
+			div > * {
+				padding: 0 10%;
+			}
+			
+			div > div {
+				padding: 0;
+			}
+
 			body {
 				display:flex;
 				flex-direction: column;
@@ -39,9 +80,18 @@
 		</style>
 	</head>
 	<body>
-		<div>
+		<div class="column h100">
 			<h1>Edward Stanforth</h1>
 		</div>
-		<div class="alt-colour">test</div>
+		<div class="row nav">
+			<a href="#about">About</a>
+			<a href="#cs">Programming</a>
+			<a href="#ee">Electrical Engineering</a>
+			<a href="#soft">Software I Use</a>
+		</div>
+		<div class="column alt-colour h100">
+			<h1>About</h1>
+			<p>I am a 15 year old software developer with experience with computer graphics and compiler design. I have dabbled in many different areas from designing my own programming language to attempting to create a static binay translator for Game Boy Roms. I have most experience in designing a game engine with the OpenGL graphics API. I like to focus on the backend as this is where the most interesting stuff happens.</p>
+		</div>
 	</body>
 </html>
