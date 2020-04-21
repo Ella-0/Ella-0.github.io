@@ -5,12 +5,34 @@ The core part of any UNIX system is the C library. Most Linux distros use the GN
 as we are creating a Linux distro with no GNU Components we can't use the GNU C Library. 
 A good alternative is the MUSL C library.
 
+```sh
+wget "https://musl.libc.org/releases/musl-1.2.0.tar.gz"
+tar -xf musl-1.2.0.tar.gz
+./configure --prefix=/usr
+make -j8
+make DESTDIR=$NEW_ROOT install
+```
+
 ## The C Compiler
 The C Compiler is needed to make the system self hosting. It will be used for compiling Linux, 
 the MUSL C LIbrary and any other dependencies. We could use the Tiny C Compiler as it has very 
 few dependencies however I was unable to successfully compile Linux or MUSL with TCC therefore 
 I had to look elsewhere. LLVM/Clang is a good option but it is large and difficult to compile 
 so I decided to go with that.
+
+## The Core Utilities
+For the core utilites we have 2 main options: toybox and busybox. Toybox would be the prefered 
+option as it is newer however toybox doesn't have everything we need so I decided to use 
+busybox.
+
+```sh
+wget "https://busybox.net/downloads/busybox-1.31.1.tar.bz2"
+tar -xf busybox-1.31.1.tar.bz2
+cd busybox-1.31.1
+ln -s $NEW_ROOT _install
+make defconfig
+make install -j8
+```
 
 ### Build Tools
 Inoder to build LLVM we need cmake too generate the build files and a build tool. 
@@ -35,7 +57,7 @@ LLVM comes with some other usefull tools such as it's own implementations of bin
 some core libraries needed by compiler frontends such as clang.
 
 ### Net BSD Curses
-Some LLVM utilites depend on GNU Ncurses however Ncurses is GNU software so we can't use it. We
+Some LLVM utilites depend on GNU Ncurses however NCurses is GNU software so we can't use it. We
 must use Net BSD Curses instead.
 
 ### LLD
