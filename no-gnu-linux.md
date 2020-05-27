@@ -3,8 +3,8 @@
 _*NOTE:*_ It is not currently possible to create a self hosting linux distro without any GNU components
 as I am yet to find a GNU compatible implementation of make. Yes bmake exists however it is _*NOT*_
 compatible with the GNU Make extensions. I'm hoping, in the future, that either the toybox project
-or the LLVM project or someone else. I will also move over from using the musl libc to the LLVM libc in
-the future.
+or the LLVM project or someone else will create a GNU compatible make so it can be self hosting.
+I will also move over from using the musl libc to the LLVM libc in the future.
 
 ## The C Library
 The core part of any UNIX system is the C library. Most Linux distros use the GNU C Library however, 
