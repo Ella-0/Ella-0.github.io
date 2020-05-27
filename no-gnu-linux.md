@@ -65,3 +65,20 @@ must use Net BSD Curses instead.
 
 ### Clang Frontend
 
+
+### Final Package List
+
+ - Linux
+ - Musl
+ - Busybox
+ - Toybox
+ - Net BSD Curses
+ - LLVM
+
+### Future Stuff to make it usable
+
+ - doas
+ - rustup
+ - sway
+ - A package manager (probably apk)
+
