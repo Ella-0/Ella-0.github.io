@@ -81,4 +81,11 @@ must use Net BSD Curses instead.
  - rustup
  - sway
  - A package manager (probably apk or something simpler)
+ 
+### Some cool replacement utilities
+
+- bat (cat with wings)
+- exa (alternative ls)
+- dust (alternative dust)
+- samurai https://github.com/michaelforney/samurai for self hosting in the future
 
