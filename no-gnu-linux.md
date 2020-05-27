@@ -80,5 +80,5 @@ must use Net BSD Curses instead.
  - doas
  - rustup
  - sway
- - A package manager (probably apk or just use busybox rpm)
+ - A package manager (probably apk or something simpler)
 
