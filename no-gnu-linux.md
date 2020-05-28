@@ -123,6 +123,18 @@ Now we need to install Samurai which can be done with `install -D -m 755 samu /u
 `./boot-strap --install-destdir="$pkgdir" --prefix=/usr op=install`
 
 
+## Packages that can be selfhosted
 
+ - toybox
+ - samurai
+ - tcc
+ - cmake (should work though bootstrapping may be difficult; may need to cross compile initially)
+ - llvm (not tested but should work)
+ - bmake (should compile but doesn't atm on both my no-gun-linux chroot and my Arch Linux host system)
+ - netbsd-curses (if build kati)
+ - musl (if build kati)
+
+## Packages that can't
+ - linux
 
 
