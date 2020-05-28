@@ -20,6 +20,16 @@ make -j8
 make DESTDIR=$NEW_ROOT install
 ```
 
+### Self host
+
+```sh
+wget "https://musl.libc.org/releases/musl-1.2.0.tar.gz"
+tar -xf musl-1.2.0.tar.gz
+./configure --prefix=/usr
+ckati
+ckati install # Not tested
+```
+
 ## The C Compiler
 The C Compiler is needed to make the system self hosting. It will be used for compiling Linux, 
 the MUSL C LIbrary and any other dependencies. We could use the Tiny C Compiler as it has very 
