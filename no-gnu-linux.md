@@ -95,3 +95,25 @@ must use Net BSD Curses instead.
 - dust (alternative dust)
 - samurai https://github.com/michaelforney/samurai for self hosting in the future
 
+### Samurai
+
+#### Boot-strap
+
+To boot-strap Samurai start by running the following which will compile the whole program manualy
+
+```
+$ cc -o samu build.c deps.c env.c graph.c htab.c log.c parse.c samu.c scan.c tool.c tree.c util.c
+```
+
+#### Recompile
+
+Once this has run we can now run `./samu` which will run the `build.ninja` file that's in that directory
+thus compiling Samurai whith itself.
+
+#### Install
+
+Now we need to install Samurai which can be done with `install -D -m 755 samu /usr/bin/samu`
+
+
+
+
