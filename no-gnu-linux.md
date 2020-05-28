@@ -94,7 +94,7 @@ must use Net BSD Curses instead.
 - bat (cat with wings)
 - exa (alternative ls)
 - dust (alternative dust)
-- samurai https://github.com/michaelforney/samurai for self hosting in the future
+- [samurai](https://github.com/michaelforney/samurai) for self hosting in the future
 
 ### Samurai
 
