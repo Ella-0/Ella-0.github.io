@@ -139,22 +139,15 @@ thus compiling Samurai whith itself.
 
 Now we need to install Samurai which can be done with `install -D -m 755 samu /usr/bin/samu`
 
-
-### BMake
-
-#### Boot-strap
-
-`./boot-strap --install-destdir="$pkgdir" --prefix=/usr op=install`
-
-
 ## Packages that can be selfhosted
 
- - toybox
- - samurai
- - tcc
+ - toybox (has build scripts or compiled with kati)
+ - samurai (build manually then with its self)
+ - tcc (can be build manually or with kati)
  - cmake (should work though bootstrapping may be difficult; may need to cross compile initially)
  - llvm (not tested but should work)
- - bmake (should compile but doesn't atm on both my no-gun-linux chroot and my Arch Linux host system)
+ - bmake (should compile but doesn't atm on both my no-gun-linux chroot and my Arch Linux host system)this isn't
+ much of a problem though as no packages require this to build.
  - netbsd-curses (if build kati)
  - musl (if build kati)
 
