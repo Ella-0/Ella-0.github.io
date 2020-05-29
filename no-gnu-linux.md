@@ -29,6 +29,7 @@ A good alternative is the MUSL C library.
 ```sh
 wget "https://musl.libc.org/releases/musl-1.2.0.tar.gz"
 tar -xf musl-1.2.0.tar.gz
+cd musl-1.2.0
 ./configure --prefix=/usr
 make -j8
 make DESTDIR=$NEW_ROOT install
