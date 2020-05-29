@@ -156,5 +156,5 @@ Now we need to install Samurai which can be done with `install -D -m 755 samu /u
  - linux
  - busybox
  
-
-
+## Usefull Resources
+ - [ngtc](https://github.com/tpimh/ngtc)
