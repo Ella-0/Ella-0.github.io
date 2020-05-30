@@ -47,8 +47,31 @@ ckati install # Not tested
 
 ## CMake
 
+The first time we build CMake we need to dissable `ccmake` to stop it from linking against
+ncurses that is included with Abyss Linux. We also need to dissable openssl otherwise cmake
+will try to link against openssl which we have not compiled for our target system.
+
 ```sh
 cmake -G Ninja \
+	-DBUILD_CursesDialog=OFF \
+	-DCMAKE_BUILD_TYPE=Release \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_USE_OPENSSL=OFF \
+	../
+```
+
+For the second build for some weird reason cmake can only be executed with the ful path
+therefore we have to type `/usr/bin/cmake` instead of `cmake`. We also need to specify
+the make program a cmake is designed to detect Ninja not Samurai. It also can't detect the
+c compiler so we pass that manually. And still keep openssl off for now.
+
+```sh
+/usr/bin/cmake -G Ninja \
+	-DCMAKE_MAKE_PROGRAM=/usr/bin/samu \
+	-DCMAKE_C_COMPILER=/usr/bin/clang \
+	-DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
+	-DCMAKE_BUILD_TYPE=Release \
+	-DCMAKE_INSTALL_PREFIX=/usr \
 	-DCMAKE_USE_OPENSSL=OFF \
 	../
 ```
