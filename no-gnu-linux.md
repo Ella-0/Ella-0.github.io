@@ -45,6 +45,14 @@ ckati
 ckati install # Not tested
 ```
 
+## CMake
+
+```sh
+cmake -G Ninja \
+	-DCMAKE_USE_OPENSSL=OFF \
+	../
+```
+
 ## The C Compiler
 The C Compiler is needed to make the system self hosting. It will be used for compiling Linux, 
 the MUSL C LIbrary and any other dependencies. We could use the Tiny C Compiler as it has very 
