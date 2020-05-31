@@ -73,6 +73,7 @@ c compiler so we pass that manually. And still keep openssl off for now.
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_INSTALL_PREFIX=/usr \
 	-DCMAKE_USE_OPENSSL=OFF \
+	-DBUILD_CursesDialog=ON \
 	../
 ```
 
