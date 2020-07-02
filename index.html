@@ -1,0 +1,96 @@
+
+d>
+		<script>
+			MathJax = {
+				tex: {
+					inlineMath: [['$', '$']],
+					processEscapes: true
+				},
+				svg: {
+					fontCache: 'global'
+  				}
+			};
+		</script>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+		<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		<script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
+		<style>
+			#mdin {
+				display: none;
+			}
+			
+			#mdout {
+				
+			}
+		</style>
+
+	</head>
+	<body class="bg-dark">
+
+		<div class="container fixed-top">
+  			<form>
+	  			<div class="input-group mt-3">
+					<input class="form-control bg-dark text-white" id="user" placeholder="User"></input>
+					<input class="form-control bg-dark text-white" id="pass" placeholder="Password"></input>
+					<input class="form-control bg-dark text-white" id="name" placeholder="Nick Name"></input>
+					<div class="input-group-append">
+						<button class="btn btn-primary" onclick="login()" type="button">Login</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="container fixed-bottom">
+  			<form>
+	  			<div class="input-group mb-3">
+					<input class="form-control bg-dark text-white" placeholder="Message"></input>
+					<div class="input-group-append">
+						<button class="btn btn-primary" type="button">Send</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</body>
+	<script>
+		
+		function httpGetAsync(theUrl, callback) {
+			var xmlHttp = new XMLHttpRequest();
+			xmlHttp.onreadystatechange = function() { 
+				if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+					callback(xmlHttp.responseText);
+			}
+			xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+			xmlHttp.send(null);
+		}
+
+		function mdGetResponse(response) {
+			console.log("logged in");
+		}
+
+		var converter = new showdown.Converter(),
+ 			text = document.getElementById("mdin").innerHTML,
+    				html = converter.makeHtml(text);
+		document.getElementById("mdout").innerHTML = html;
+	</script>
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css">
+	<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+	<style>
+		.hljs {
+			background: #4C566A;
+			color: #D8DEE9;
+			border-radius: 5px;
+		}
+		.hljs-string {
+			color: #A3BE8C;
+		}
+	</style>
+</html>
+
+
+
