@@ -50,7 +50,7 @@
 			.jumbotron {
 				border-radius: 0;
 				margin-bottom: 0;
-				background: #00000000 !important;
+				background: #00000000;
 			}
 
 			.vh25 {
@@ -93,19 +93,9 @@
 				</div>
 		</div>
 
-		<div class="jumbotron text-light align-self-center text-center v50">
-			<h1>Wild Developer</h1>      
-			<p>Tabs not Spaces</p>
-		</div>
 
-		<div class="container-fluid">
-			<div class="bg-light row content vh50">
-				<div class="bg-light container">
-					<div class="bg-light text-dark col-sm-12 align-self-center mdout h100" id="mdout0">
-					
-					</div>
-				</div>
-			</div>
+		<div class="jumbotron text-dark bg-light align-self-center text-center v50">
+			<h1>Ed Stanforth</h1>      
 		</div>
 
 		<div class="jumbotron text-light align-self-center text-center">
@@ -127,6 +117,10 @@ Using it I have written simple programs for the hifive1-revb
 risc-v dev board, a basic web app backend using the rocket
 crate and a simple vulkan renderer making use of the vulkano
 crate and the specs ECS crate.
+
+[Rust Vulkan Renderer](http://github.com/Edward-0/reduction)
+
+[RISC-V Stuff](http://github.com/Edward-0/riscv-playground)
 				</div>
 				<div class="col-sm-3 mdout h100" id="mdout2">
 
@@ -140,6 +134,10 @@ Python and PyGame on the raspberry pi and quickly moved
 on to Kotlin and Java with the LWJGL OpenGL Bindings.
 More recently I have been learing the Vulkan API and
 have got a triangle rendering with both C and Rust.
+
+[C Vulkan Renderer](http://github.com/Edward-0/vulkan-playground)
+
+[Java OpenGL Engine](http://github.com/Edward-0/shatter-engine)
 				</div>
 
 				<div class="col-sm-3 mdout h100" id="mdout3">
@@ -152,6 +150,8 @@ For a while I have been developing a compiler for my programming language, Grime
 which aims to be like C with a more modern syntax.
 
 Currently my compiler is written in C and uses the LLVM-C API for code generation.
+
+[Grime Compiler](http://github.com/Edward-0/grimec)
 				</div>
 
 				<div class="col-sm-3 mdout h100" id="mdout4">
@@ -165,6 +165,8 @@ linux so I decided to start making a self hoasting GNU-less Linux distro using
 the MUSL C library, Busybox core utils and LLVM C++ and compiler libraries.
 The project is not self hoasting yet due to the lack of a complete alternative
 to GNU Make.
+
+[Non GNU Linux](/no-gnu-linux)
 				</div>
 			</div>
 		</div>
@@ -182,7 +184,6 @@ to GNU Make.
 # Kakoune
 I use kakoune as my text editor and IDE with syntax highlighting and completion
 dealt with by the kak-lsp pluggin.
-
 				</div>
 				<div class="col-sm-3 mdout h100" id="mdout7">
 
@@ -190,7 +191,8 @@ dealt with by the kak-lsp pluggin.
 
 				<div class="mdin" id="mdin7">
 # CMake
-I use CMake to build any C projects 
+I use CMake as the build system of all my C projects and have a basic understanding
+of the scripting language.
 				</div>
 
 				<div class="col-sm-3 mdout h100" id="mdout8">
@@ -198,7 +200,8 @@ I use CMake to build any C projects
 				</div>
 
 				<div class="mdin" id="mdin8">
-
+# Git
+I use git to manage all of my code and I store it all on github and some local repositories.
 				</div>
 
 				<div class="col-sm-3 mdout h100" id="mdout9">
@@ -206,12 +209,10 @@ I use CMake to build any C projects
 				</div>
 
 				<div class="mdin" id="mdin9">
-# Non GNU Linux
-I have been disapointed for a while the the GNU project has a monopoly on desktop
-linux so I decided to start making a self hoasting GNU-less Linux distro using
-the MUSL C library, Busybox core utils and LLVM C++ and compiler libraries.
-The project is not self hoasting yet due to the lack of a complete alternative
-to GNU Make.
+# Arch Linux
+Arch Linux is my operating system of choice as it provides a very powerful package
+manager (pacman) and has a vast repository of package build scripts in the AUR.
+
 				</div>
 			</div>
 		</div>
@@ -422,7 +423,7 @@ fn panic(_info: &PanicInfo) -> ! {
          /*==================== MATRIX =====================*/
 
          function get_projection(angle, a, zMin, zMax) {
-            var ang = Math.tan((angle*.5)*Math.PI/180);//angle*.5
+            var ang = Math.tan((angle*0.5)*Math.PI/180);//angle*0.5
             return [
                0.5/ang, 0 , 0, 0,
                0, 0.5*a/ang, 0, 0,
@@ -431,7 +432,7 @@ fn panic(_info: &PanicInfo) -> ! {
             ];
          }
 
-         var proj_matrix = get_projection(100, canvas.width/canvas.height, 1, 100);
+         var proj_matrix = get_projection(100, window.screen.width/window.screen.height, 1, 100);
 
          var mov_matrix = [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1];
          var view_matrix = [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1];
@@ -499,7 +500,7 @@ fn panic(_info: &PanicInfo) -> ! {
             gl.clearColor(0.0, 0.0, 0.0, 0.0);
             gl.clearDepth(1.0);
 
-            gl.viewport(0.0, 0.0, canvas.width, canvas.height);
+            gl.viewport(0.0, 0.0, window.screen.width, window.screen.height);
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
             gl.uniformMatrix4fv(Pmatrix, false, proj_matrix);
             gl.uniformMatrix4fv(Vmatrix, false, view_matrix);
@@ -529,9 +530,9 @@ fn panic(_info: &PanicInfo) -> ! {
 		}
 
 		var converter = new showdown.Converter(),
- 			text = document.getElementById("mdin0").innerHTML,
-    				html = converter.makeHtml(text);
-		document.getElementById("mdout0").innerHTML = html;
+ 		//	text = document.getElementById("mdin0").innerHTML,
+    	//			html = converter.makeHtml(text);
+		//document.getElementById("mdout0").innerHTML = html;
 		
  			text = document.getElementById("mdin1").innerHTML,
     				html = converter.makeHtml(text);
