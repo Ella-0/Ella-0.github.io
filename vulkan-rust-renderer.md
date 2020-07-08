@@ -26,13 +26,13 @@ $
 \begin{bmatrix}
 1 - 2s (q_j^2 + q_k^2) &
 2s (q_i q_j - q_k q_r) &
-2s (q_i q_k + q_j q_r) & 0 \\
+2s (q_i q_k + q_j q_r) & 0 \\\
 2s (q_i q_j + q_k q_r) &
 1 - 2s (q_i^2 + q_k^2) &
-2s (q_j q_k - q_i q_r) & 0 \\
+2s (q_j q_k - q_i q_r) & 0 \\\
 2s (q_i q_k - q_j q_r) &
 2s (q_j q_k + q_i q_r) &
-1 - 2s (q_i^2 + q_j^2) & 0 \\
+1 - 2s (q_i^2 + q_j^2) & 0 \\\
 0 & 0 & 0 & 1
 \end{bmatrix}
 $
