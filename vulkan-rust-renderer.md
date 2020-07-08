@@ -14,11 +14,11 @@
 
 # Vulkan Rust Renderer
 
-$\\[
+$\left\[
 	\begin{matrix}
 		a & b & c \\\
 		d & e & f \\\
 		g & h & i
 	\end{matrix}
-\\]$
+\right\]$
 
