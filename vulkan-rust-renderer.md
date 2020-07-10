@@ -42,6 +42,7 @@ a square root. We can fix this by only allowing a unit quaternion. This results 
 
 $
 s = 1 \\\
+
 \therefore \\\
 
 \begin{bmatrix}
