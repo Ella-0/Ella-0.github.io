@@ -14,7 +14,8 @@ cd kati
 make
 ```
 ### Self host
-
+Note this only works if `git` is installed.
+.
 ```sh
 git clone "https://github.com/google/kati" --depth=1
 cd kati
@@ -60,10 +61,12 @@ cmake -G Ninja \
 	../
 ```
 
-For the second build for some weird reason cmake can only be executed with the ful path
+For the second build for some weird reason cmake can only be executed with the full path
 therefore we have to type `/usr/bin/cmake` instead of `cmake`. We also need to specify
 the make program a cmake is designed to detect Ninja not Samurai. It also can't detect the
 c compiler so we pass that manually. And still keep openssl off for now.
+
+This can be fixed by setting the `PATH` environment variable.
 
 ```sh
 /usr/bin/cmake -G Ninja \
@@ -145,7 +148,7 @@ cmake -G Ninja -Wno-dev \
 	-DLLVM_HOST_TRIPLE=x86_64-pc-linux-musl \
 	-DLLVM_DEFAULT_TARGET_TRIPLE=x86_64-pc-linux-musl \
 	-DLLVM_ENABLE_LIBXML2=OFF \
-	-DLLVM_ENABLE_ZLIB=ON \
+	-DLLVM_ENABLE_ZLIB=YES\
 	-DLLVM_BUILD_LLVM_DYLIB=ON \
 	-DLLVM_LINK_LLVM_DYLIB=ON \
 	-DLLVM_OPTIMIZED_TABLEGEN=ON \
@@ -202,10 +205,55 @@ samu
 env DESTDIR=/path/to/your/install/root samu install
 ```
 
+### ZLib
+
+```sh
+./configure --prefix=/usr
+ckati
+doas ckati install
+```
+
+### Berkley Yacc
+Berkley Yacc is an alternative implementation of Yacc (Yet Another Compiler Compiler) that i'll use since
+GNU Bison is offlimits.
+
+```sh
+./configure --prefix=/usr
+bmake
+doas bmake install
+```
+
 ### Net BSD Curses
 Some LLVM utilites depend on GNU Ncurses however NCurses is GNU software so we can't use it. We
 must use Net BSD Curses instead.
 
+```sh
+ckati
+ckati PREFIX=/usr install
+```
+
+### Doas
+Since sudo is massive, I've chosen to go with a port of OpenBSD doas on this distro for authenticating as
+a different user with your own password. _**NOTE**_ byacc is needed to build doas.
+
+```sh
+yacc  parse.y
+mv -f y.tab.c parse.c
+cc -I. -I./libopenbsd -Wall -Wextra -Werror -pedantic -MD -MP -Wno-unused-result -D__linux__ -D_DEFAULT_SOURCE -D_GNU_SOURCE -DUID_MAX=65535 -DGID_MAX=65535 -DHAVE_EXPLICIT_BZERO -DHAVE_STRLCAT -DHAVE_STRLCPY -DHAVE_EXECVPE -DHAVE_SETRESUID -DHAVE_SYSCONF -DHAVE_PROC_PID -DHAVE_DIRFD -DHAVE_FCNTL_H -DHAVE_DIRENT_H -DHAVE_SYS_DIR_H -DHAVE___ATTRIBUTE__ -DHAVE_SHADOW_H -DUSE_SHADOW  -c parse.c -o parse.o
+cc -I. -I./libopenbsd -Wall -Wextra -Werror -pedantic -MD -MP -Wno-unused-result -D__linux__ -D_DEFAULT_SOURCE -D_GNU_SOURCE -DUID_MAX=65535 -DGID_MAX=65535 -DHAVE_EXPLICIT_BZERO -DHAVE_STRLCAT -DHAVE_STRLCPY -DHAVE_EXECVPE -DHAVE_SETRESUID -DHAVE_SYSCONF -DHAVE_PROC_PID -DHAVE_DIRFD -DHAVE_FCNTL_H -DHAVE_DIRENT_H -DHAVE_SYS_DIR_H -DHAVE___ATTRIBUTE__ -DHAVE_SHADOW_H -DUSE_SHADOW  -c doas.c -o doas.o
+cc -I. -I./libopenbsd -Wall -Wextra -Werror -pedantic -MD -MP -Wno-unused-result -D__linux__ -D_DEFAULT_SOURCE -D_GNU_SOURCE -DUID_MAX=65535 -DGID_MAX=65535 -DHAVE_EXPLICIT_BZERO -DHAVE_STRLCAT -DHAVE_STRLCPY -DHAVE_EXECVPE -DHAVE_SETRESUID -DHAVE_SYSCONF -DHAVE_PROC_PID -DHAVE_DIRFD -DHAVE_FCNTL_H -DHAVE_DIRENT_H -DHAVE_SYS_DIR_H -DHAVE___ATTRIBUTE__ -DHAVE_SHADOW_H -DUSE_SHADOW  -c env.c -o env.o
+cc -I. -I./libopenbsd -Wall -Wextra -Werror -pedantic -MD -MP -Wno-unused-result -D__linux__ -D_DEFAULT_SOURCE -D_GNU_SOURCE -DUID_MAX=65535 -DGID_MAX=65535 -DHAVE_EXPLICIT_BZERO -DHAVE_STRLCAT -DHAVE_STRLCPY -DHAVE_EXECVPE -DHAVE_SETRESUID -DHAVE_SYSCONF -DHAVE_PROC_PID -DHAVE_DIRFD -DHAVE_FCNTL_H -DHAVE_DIRENT_H -DHAVE_SYS_DIR_H -DHAVE___ATTRIBUTE__ -DHAVE_SHADOW_H -DUSE_SHADOW  -c shadow.c -o shadow.o
+cc -I. -I./libopenbsd -Wall -Wextra -Werror -pedantic -MD -MP -Wno-unused-result -D__linux__ -D_DEFAULT_SOURCE -D_GNU_SOURCE -DUID_MAX=65535 -DGID_MAX=65535 -DHAVE_EXPLICIT_BZERO -DHAVE_STRLCAT -DHAVE_STRLCPY -DHAVE_EXECVPE -DHAVE_SETRESUID -DHAVE_SYSCONF -DHAVE_PROC_PID -DHAVE_DIRFD -DHAVE_FCNTL_H -DHAVE_DIRENT_H -DHAVE_SYS_DIR_H -DHAVE___ATTRIBUTE__ -DHAVE_SHADOW_H -DUSE_SHADOW  -c libopenbsd/errc.c -o libopenbsd/errc.o
+cc -I. -I./libopenbsd -Wall -Wextra -Werror -pedantic -MD -MP -Wno-unused-result -D__linux__ -D_DEFAULT_SOURCE -D_GNU_SOURCE -DUID_MAX=65535 -DGID_MAX=65535 -DHAVE_EXPLICIT_BZERO -DHAVE_STRLCAT -DHAVE_STRLCPY -DHAVE_EXECVPE -DHAVE_SETRESUID -DHAVE_SYSCONF -DHAVE_PROC_PID -DHAVE_DIRFD -DHAVE_FCNTL_H -DHAVE_DIRENT_H -DHAVE_SYS_DIR_H -DHAVE___ATTRIBUTE__ -DHAVE_SHADOW_H -DUSE_SHADOW  -c libopenbsd/verrc.c -o libopenbsd/verrc.o
+cc -I. -I./libopenbsd -Wall -Wextra -Werror -pedantic -MD -MP -Wno-unused-result -D__linux__ -D_DEFAULT_SOURCE -D_GNU_SOURCE -DUID_MAX=65535 -DGID_MAX=65535 -DHAVE_EXPLICIT_BZERO -DHAVE_STRLCAT -DHAVE_STRLCPY -DHAVE_EXECVPE -DHAVE_SETRESUID -DHAVE_SYSCONF -DHAVE_PROC_PID -DHAVE_DIRFD -DHAVE_FCNTL_H -DHAVE_DIRENT_H -DHAVE_SYS_DIR_H -DHAVE___ATTRIBUTE__ -DHAVE_SHADOW_H -DUSE_SHADOW  -c libopenbsd/progname.c -o libopenbsd/progname.o
+cc -I. -I./libopenbsd -Wall -Wextra -Werror -pedantic -MD -MP -Wno-unused-result -D__linux__ -D_DEFAULT_SOURCE -D_GNU_SOURCE -DUID_MAX=65535 -DGID_MAX=65535 -DHAVE_EXPLICIT_BZERO -DHAVE_STRLCAT -DHAVE_STRLCPY -DHAVE_EXECVPE -DHAVE_SETRESUID -DHAVE_SYSCONF -DHAVE_PROC_PID -DHAVE_DIRFD -DHAVE_FCNTL_H -DHAVE_DIRENT_H -DHAVE_SYS_DIR_H -DHAVE___ATTRIBUTE__ -DHAVE_SHADOW_H -DUSE_SHADOW  -c libopenbsd/readpassphrase.c -o libopenbsd/readpassphrase.o
+cc -I. -I./libopenbsd -Wall -Wextra -Werror -pedantic -MD -MP -Wno-unused-result -D__linux__ -D_DEFAULT_SOURCE -D_GNU_SOURCE -DUID_MAX=65535 -DGID_MAX=65535 -DHAVE_EXPLICIT_BZERO -DHAVE_STRLCAT -DHAVE_STRLCPY -DHAVE_EXECVPE -DHAVE_SETRESUID -DHAVE_SYSCONF -DHAVE_PROC_PID -DHAVE_DIRFD -DHAVE_FCNTL_H -DHAVE_DIRENT_H -DHAVE_SYS_DIR_H -DHAVE___ATTRIBUTE__ -DHAVE_SHADOW_H -DUSE_SHADOW  -c libopenbsd/strtonum.c -o libopenbsd/strtonum.o
+cc -I. -I./libopenbsd -Wall -Wextra -Werror -pedantic -MD -MP -Wno-unused-result -D__linux__ -D_DEFAULT_SOURCE -D_GNU_SOURCE -DUID_MAX=65535 -DGID_MAX=65535 -DHAVE_EXPLICIT_BZERO -DHAVE_STRLCAT -DHAVE_STRLCPY -DHAVE_EXECVPE -DHAVE_SETRESUID -DHAVE_SYSCONF -DHAVE_PROC_PID -DHAVE_DIRFD -DHAVE_FCNTL_H -DHAVE_DIRENT_H -DHAVE_SYS_DIR_H -DHAVE___ATTRIBUTE__ -DHAVE_SHADOW_H -DUSE_SHADOW  -c libopenbsd/reallocarray.c -o libopenbsd/reallocarray.o
+cc -I. -I./libopenbsd -Wall -Wextra -Werror -pedantic -MD -MP -Wno-unused-result -D__linux__ -D_DEFAULT_SOURCE -D_GNU_SOURCE -DUID_MAX=65535 -DGID_MAX=65535 -DHAVE_EXPLICIT_BZERO -DHAVE_STRLCAT -DHAVE_STRLCPY -DHAVE_EXECVPE -DHAVE_SETRESUID -DHAVE_SYSCONF -DHAVE_PROC_PID -DHAVE_DIRFD -DHAVE_FCNTL_H -DHAVE_DIRENT_H -DHAVE_SYS_DIR_H -DHAVE___ATTRIBUTE__ -DHAVE_SHADOW_H -DUSE_SHADOW  -c libopenbsd/closefrom.c -o libopenbsd/closefrom.o
+ar -r libopenbsd.a libopenbsd/errc.o libopenbsd/verrc.o libopenbsd/progname.o libopenbsd/readpassphrase.o libopenbsd/strtonum.o libopenbsd/reallocarray.o libopenbsd/closefrom.o
+cc -I. -I./libopenbsd -Wall -Wextra -Werror -pedantic -MD -MP -Wno-unused-result -D__linux__ -D_DEFAULT_SOURCE -D_GNU_SOURCE -DUID_MAX=65535 -DGID_MAX=65535 -DHAVE_EXPLICIT_BZERO -DHAVE_STRLCAT -DHAVE_STRLCPY -DHAVE_EXECVPE -DHAVE_SETRESUID -DHAVE_SYSCONF -DHAVE_PROC_PID -DHAVE_DIRFD -DHAVE_FCNTL_H -DHAVE_DIRENT_H -DHAVE_SYS_DIR_H -DHAVE___ATTRIBUTE__ -DHAVE_SHADOW_H parse.o doas.o env.o shadow.o libopenbsd.a -o doas -lcrypt
+rm parse.c
+```
 ### Final Package List
 
  - Linux
@@ -218,15 +266,15 @@ must use Net BSD Curses instead.
 
 ### Future Stuff to make it usable
 
- - doas
+ - doas - partially working though "can't authenticate error"
  - rustup
  - sway
  - A package manager (probably apk or something simpler)
  
 ### Some cool replacement utilities
 
-- bat (cat with wings)
-- exa (alternative ls)
+- bat (cat with wings) - works but busybox less doesn't support raw char flag
+- exa (alternative ls) - 
 - dust (alternative dust)
 - [samurai](https://github.com/michaelforney/samurai) for self hosting in the future
 
