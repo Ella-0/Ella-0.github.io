@@ -278,6 +278,129 @@ rm parse.c
 - dust (alternative dust)
 - [samurai](https://github.com/michaelforney/samurai) for self hosting in the future
 
+### Rust
+Rust is a weird one as it is very difficult to compile. Rust is usually installed through the rust toolchain installer (rustup)
+though the x86_64-unknown-linux-musl toolchain provided links dynamically against libgcc_s which is not provided
+in our system for reasons that are farely obvious. In future, upstream should link libgcc or libunwind statically
+inorder to work on more obscure musl systems though for now this isn't the case so we need to cross compile our own.
+
+So far I have not been able to successfully build a toolchain with a statically linked unwinder but I can link rust
+against the unwinder in our target chroot fairly easily with minimal changes.
+
+The first change to make is with the libunwind crate. In lib.rs we need to tell rust to link against libunwind rather
+than libgcc.
+
+```rust
+#![no_std]
+#![unstable(feature = "panic_unwind", issue = "32837")]
+#![feature(link_cfg)]
+#![feature(nll)]
+#![feature(staged_api)]
+#![feature(unwind_attributes)]
+#![feature(static_nobundle)]
+#![cfg_attr(not(target_env = "msvc"), feature(libc))]
+
+cfg_if::cfg_if! {
+    if #[cfg(target_env = "msvc")] {
+        // no extra unwinder support needed
+    } else if #[cfg(all(target_arch = "wasm32", not(target_os = "emscripten")))] {
+        // no unwinder on the system!
+    } else {
+        mod libunwind;
+        pub use libunwind::*;
+    }
+}
+
+#[cfg(target_env = "musl")]
+#[link(name = "unwind", kind = "static", cfg(target_feature = "crt-static"))]
+#[link(name = "unwind", cfg(not(target_feature = "crt-static")))] // **THE CHANGED LINE**
+extern "C" {}
+
+#[cfg(target_os = "redox")]
+#[link(name = "gcc_eh", kind = "static-nobundle", cfg(target_feature = "crt-static"))]
+#[link(name = "gcc_s", cfg(not(target_feature = "crt-static")))]
+extern "C" {}
+
+#[cfg(all(target_vendor = "fortanix", target_env = "sgx"))]
+#[link(name = "unwind", kind = "static-nobundle")]
+extern "C" {}
+```
+
+Then we need to create a directory called `extras` in `src/ci/docker/` and populate it with
+all of the files matching `/usr/lib/libunwind.so*`
+
+Then we need to edit the musl ci docker file to look like this
+
+```docker
+FROM ubuntu:16.04
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  g++ \
+  make \
+  file \
+  wget \
+  curl \
+  ca-certificates \
+  python3 \
+  git \
+  cmake \
+  xz-utils \
+  sudo \
+  gdb \
+  patch \
+  libssl-dev \
+  libunwind-dev \
+  pkg-config
+
+WORKDIR /build/
+
+COPY scripts/musl-toolchain.sh /build/
+# We need to mitigate rust-lang/rust#34978 when compiling musl itself as well
+RUN CFLAGS="-Wa,-mrelax-relocations=no -Wa,--compress-debug-sections=none -Wl,--compress-debug-sections=none" \
+    CXXFLAGS="-Wa,-mrelax-relocations=no -Wa,--compress-debug-sections=none -Wl,--compress-debug-sections=none" \
+    REPLACE_CC=1 bash musl-toolchain.sh x86_64 && rm -rf build
+
+COPY scripts/sccache.sh /scripts/
+RUN sh /scripts/sccache.sh
+
+
+COPY extras/libunwind.so /usr/local/x86_64-linux-musl/lib
+COPY extras/libunwind.so.1 /usr/local/x86_64-linux-musl/lib
+COPY extras/libunwind.so.1.0 /usr/local/x86_64-linux-musl/lib
+
+
+ENV HOSTS=x86_64-unknown-linux-musl
+
+ENV RUST_CONFIGURE_ARGS \
+      --musl-root-x86_64=/usr/local/x86_64-linux-musl \
+      --enable-extended \
+      --disable-docs \
+      --enable-lld \
+      --enable-llvm-libunwind \
+      --enable-llvm-static-stdcpp \
+      --set target.x86_64-unknown-linux-musl.crt-static=false \
+      --build $HOSTS
+
+# Newer binutils broke things on some vms/distros (i.e., linking against
+# unknown relocs disabled by the following flag), so we need to go out of our
+# way to produce "super compatible" binaries.
+#
+# See: https://github.com/rust-lang/rust/issues/34978
+# And: https://github.com/rust-lang/rust/issues/59411
+ENV CFLAGS_x86_64_unknown_linux_musl="-Wa,-mrelax-relocations=no -Wa,--compress-debug-sections=none \
+    -Wl,--compress-debug-sections=none"
+
+# To run native tests replace `dist` below with `test`
+ENV SCRIPT python3 ../x.py dist -i --build $HOSTS
+```
+
+then we can do
+```
+doas src/ci/docker/run.sh dist-x86_64-musl
+```
+which will build out toolchain and output it in several tarballs in `obj/build/dist`
+which then can be copied and extracted in the target system
+
 ### Samurai
 
 #### Boot-strap
