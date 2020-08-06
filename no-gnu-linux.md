@@ -53,7 +53,7 @@ wget "https://musl.libc.org/releases/musl-1.2.0.tar.gz"
 tar -xf musl-1.2.0.tar.gz
 ./configure --prefix=/usr
 ckati
-ckati install # Not tested
+ckati install
 ```
 
 ## CMake
@@ -432,12 +432,15 @@ Now we need to install Samurai which can be done with `install -D -m 755 samu /u
 
 ## Packages that can be selfhosted
  - samurai (build manually then with its self)
- - cmake (should work though bootstrapping may be difficult; may need to cross compile initially)
+ - cmake
  - llvm (requires python with libffi)
  - netbsd-curses (if build kati)
  - musl (if build kati)
  - python
  - kati
+ - rust
+ - doas
+ - byacc
 
 ## Packages that can't
  - linux (due to complex makefiles (kconfig))
