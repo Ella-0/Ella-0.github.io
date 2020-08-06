@@ -19,7 +19,17 @@ Note this only works if `git` is installed.
 ```sh
 git clone "https://github.com/google/kati" --depth=1
 cd kati
+CXX=/usr/bin/c++ ckati
+doas install -Dm755 ckati /usr/bin
+```
+
+### Gettext
+get text is a set of GNU tools so we'll have to find an alternative. Luckily sabotage linux already has one called gettext-tiny.
+
+```sh
+cd gettext-tiny
 ckati
+doas ckati install perfix=/usr
 ```
 
 ## The C Library
