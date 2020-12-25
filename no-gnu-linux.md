@@ -434,6 +434,12 @@ doas src/ci/docker/run.sh dist-x86_64-musl
 which will build out toolchain and output it in several tarballs in `obj/build/dist`
 which then can be copied and extracted in the target system
 
+#### New
+I have a possible new way to build a rust toolchain thanks to `bjorn3` on Zulip.
+Remove `crate-type = ["dylib"]` from `compiler/rustc_driver/Cargo.toml`. This should result
+in only linking against `libc.so` and `ld.so` dynamically. This makes cross compiling much
+easier as it can now be done in an alpine docker image.
+
 ### Samurai
 
 #### Boot-strap
