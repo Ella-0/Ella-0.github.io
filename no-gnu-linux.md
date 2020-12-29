@@ -285,7 +285,7 @@ rm parse.c
 
 - bat (cat with wings) - works but busybox less doesn't support raw char flag
 - exa (alternative ls) - 
-- dust (alternative dust)
+- dust (alternative du)
 - [samurai](https://github.com/michaelforney/samurai) for self hosting in the future
 
 ### Rust
