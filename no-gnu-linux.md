@@ -6,6 +6,29 @@ compatible with the GNU Make extensions. This means that the system can not comp
 yet I'm hoping, in the future, that either the toybox project or the LLVM project or someone else will create a GNU compatible make so it can be self hosting. I will also move over from using the musl libc to the LLVM libc in the future. I'm currently investigating the use of Google's [Kati](https://github.com/google/kati) as the GNU make alternative. However
 it still can not compile the Linux kernel.
 
+## How it should look
+
+### The Current Base System
+The current system is based on 4 core packages: Linux as the kernel, Musl as the Libc, Busybox as the utilities and LLVM as the toolchain.
+
+Things in the current system that wont be in the final system: GMake, BMake, Bison, BYacc, Musl, Kati  
+
+### The Final Base System
+The final system will be based around 3 packages:
+ - Linux as the kernel
+ - Toybox as the utilities
+ - LLVM for the toolchain.
+
+CMake will be needed for rebuilding and possibly Samurai if Toybox Make isn't good enough to build Makefiles from CMake.
+
+
+### Extra software that might be nice
+ - OpenDoas as an sudo replacement
+ - Fish shell as a frendly inderactive shell
+ - Kakoune for text editing though needs more work on porting to netbsd-curses
+ - APK for package managment
+ - SWVKC for GUI but needs more work
+
 ## Kati
 Kati can be build with itself or make
 ```sh
@@ -410,6 +433,12 @@ doas src/ci/docker/run.sh dist-x86_64-musl
 ```
 which will build out toolchain and output it in several tarballs in `obj/build/dist`
 which then can be copied and extracted in the target system
+
+#### New
+I have a possible new way to build a rust toolchain thanks to `bjorn3` on Zulip.
+Remove `crate-type = ["dylib"]` from `compiler/rustc_driver/Cargo.toml`. This should result
+in only linking against `libc.so` and `ld.so` dynamically. This makes cross compiling much
+easier as it can now be done in an alpine docker image.
 
 ### Samurai
 
